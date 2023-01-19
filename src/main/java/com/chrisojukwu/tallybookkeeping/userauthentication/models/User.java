@@ -1,18 +1,37 @@
 package com.chrisojukwu.tallybookkeeping.userauthentication.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
+
+@Entity(name = "user_table")
+@JsonIgnoreProperties( value = {"id", "password"}, allowSetters = true )
 public class User {
 
     public User() {
     }
 
+    public User(Long id, String userId, String email, String password, String businessName, String businessAddress, String businessPhone, String firstName, String lastName, String role, boolean enabled, Provider provider) {
+        this.id = id;
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.businessName = businessName;
+        this.businessAddress = businessAddress;
+        this.businessPhone = businessPhone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.enabled = enabled;
+        this.provider = provider;
+    }
+
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name="user_id", nullable = false, unique = true)
@@ -25,13 +44,25 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 20)
-    @JsonProperty("first_name")
-    private String firstName;
+    @Column(length = 100)
+    @JsonProperty("business_name")
+    private String businessName = "My Business Name";
 
-    @Column(name = "last_name", nullable = false, length = 20)
+    @Column(length = 200)
+    @JsonProperty("business_address")
+    private String businessAddress = "";
+
+    @Column(length = 35)
+    @JsonProperty("business_phone")
+    private String businessPhone = "";
+
+    @Column(name = "first_name", nullable = false, length = 30)
+    @JsonProperty("first_name")
+    private String firstName = "";
+
+    @Column(name = "last_name", nullable = false, length = 30)
     @JsonProperty("last_name")
-    private String lastName;
+    private String lastName = "";
 
     private String role;
     private boolean enabled;
@@ -95,7 +126,6 @@ public class User {
         this.role = role;
     }
 
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -112,19 +142,29 @@ public class User {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", role='" + role + '\'' +
-                ", enabled=" + enabled +
-                '}';
+    public String getBusinessName() {
+        return businessName;
     }
 
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
+
+    public String getBusinessAddress() {
+        return businessAddress;
+    }
+
+    public void setBusinessAddress(String businessAddress) {
+        this.businessAddress = businessAddress;
+    }
+
+    public String getBusinessPhone() {
+        return businessPhone;
+    }
+
+    public void setBusinessPhone(String businessPhone) {
+        this.businessPhone = businessPhone;
+    }
 }
 
 

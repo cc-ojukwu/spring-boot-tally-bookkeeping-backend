@@ -1,6 +1,7 @@
 package com.chrisojukwu.tallybookkeeping.userauthentication;
 
 import com.chrisojukwu.tallybookkeeping.userauthentication.models.User;
+import com.chrisojukwu.tallybookkeeping.userauthentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

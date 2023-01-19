@@ -1,38 +1,22 @@
-package com.chrisojukwu.tallybookkeeping.userauthentication;
+package com.chrisojukwu.tallybookkeeping.userauthentication.security;
 
+import com.chrisojukwu.tallybookkeeping.userauthentication.UserDetailsServiceImpl;
+import com.chrisojukwu.tallybookkeeping.userauthentication.repository.UserRepository;
 import com.chrisojukwu.tallybookkeeping.userauthentication.security.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
-import java.io.IOException;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @Configuration
@@ -45,11 +29,6 @@ public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-//    @Autowired
-//    private CustomOAuth2UserService oAuth2UserService;
-//
-//    @Autowired
-//    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -67,14 +46,9 @@ public class SecurityConfiguration {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> {
-                    //auth.antMatchers("/**").hasRole("USER");
-                    auth.antMatchers("/user/**").hasAnyRole("USER", "ADMIN");
-                    auth.antMatchers("/info/**").hasAnyRole("USER", "ADMIN");
-                    auth.antMatchers("/auth/login/**").permitAll();
-                    auth.antMatchers("/auth/oauth2/**").permitAll();
-                    auth.antMatchers("/register/**").permitAll();
-                    auth.antMatchers("/process-register/**").permitAll();
-                    auth.antMatchers("/test").permitAll();
+                    //auth.antMatchers("/user/**").hasAnyRole("USER", "ADMIN");
+                    //auth.antMatchers("/info/**").hasAnyRole("USER", "ADMIN");
+                    auth.antMatchers("/auth/**").permitAll();
                     auth.antMatchers("/").permitAll();
                     auth.anyRequest().authenticated();
                 })
